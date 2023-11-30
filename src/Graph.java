@@ -1,9 +1,11 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Graph {
     private int[] origin = {0,0};
-    private ArrayList<int[]> route;
+    private ArrayList<Point> routePlan;
     private ArrayList<Point> points;
+    private HashMap<String, Integer> pointIndex; // Point名称到索引的映射
     private int[][] distanceMatrix; // 存储点与点之间的距离
 
     /**
@@ -12,12 +14,12 @@ public class Graph {
      */
     public Graph(int[] origin) {
         this.origin = origin;
-        this.route = new ArrayList<>();
+        this.routePlan = new ArrayList<>();
         this.distanceMatrix = new int[0][0]; // 初始化一个空的距离矩阵
     }
 
     // 更新距离矩阵
-    private void updateDistanceMatrix(int[] newPoint) {
+    private void updateDistanceMatrix(Point newPoint) {
         int newSize = distanceMatrix.length + 1;
         int[][] newMatrix = new int[newSize][newSize];
 
@@ -28,22 +30,26 @@ public class Graph {
 
         // 计算新点到其他所有点的距离
         for (int i = 0; i < newSize - 1; i++) {
-            newMatrix[i][newSize - 1] = newMatrix[newSize - 1][i] = calculateDistance(newPoint, route.get(i));
+            newMatrix[i][newSize - 1] = newMatrix[newSize - 1][i] = calculateDistance(newPoint, routePlan.get(i));
         }
 
         distanceMatrix = newMatrix;
     }
     // 计算两点之间的距离
-    private int calculateDistance(int[] point1, int[] point2) {
-        return Math.abs(point1[0] - point2[0]) + Math.abs(point1[1] - point2[1]);
+    private int calculateDistance(Point point1, Point point2) {
+        return Math.abs(point1.getPosition()[0] - point2.getPosition()[0])
+                + Math.abs(point1.getPosition()[1] - point2.getPosition()[1]);
     }
 
     /**
      * 在快递员接到任务时，调用此方法，将一个点加入到图中，并更新route
-     * @param xy 新坐标
+     * @param newPoint 新坐标
      */
-    public void addPoint(int[] xy){
-
+    public void addPoint(Point newPoint) {
+        points.add(newPoint); // 将新点加入到点列表中
+        pointIndex.put(newPoint.getName(), points.size() - 1); // 更新点索引映射
+        updateDistanceMatrix(newPoint); // 更新距离矩阵
+        // 更新路线...
     }
 
     /**
@@ -58,8 +64,8 @@ public class Graph {
      * 给出路线
      * @return route
      */
-    private ArrayList<int[]>getRoute(){
-        return this.route;
+    private ArrayList<Point>getRoute(){
+        return this.routePlan;
     }
 
     /**
