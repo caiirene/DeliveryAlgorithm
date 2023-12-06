@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Graph {
+public class MapApp {
     private int[] origin = {0,0};
     private ArrayList<Point> routePlan;
     private ArrayList<Point> points;
@@ -12,7 +12,7 @@ public class Graph {
      * 构造器
      * @param origin
      */
-    public Graph(int[] origin) {
+    public MapApp(int[] origin) {
         this.origin = origin;
         this.routePlan = new ArrayList<>();
         this.distanceMatrix = new int[0][0]; // 初始化一个空的距离矩阵
