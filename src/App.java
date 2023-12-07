@@ -6,7 +6,6 @@ public class App {
     private ArrayList<Point> routePlan;
     private ArrayList<Point> points;
     private HashMap<String, Integer> pointIndex; // Point名称到索引的映射
-    private int[][] distanceMatrix; // 存储点与点之间的距离
     private Map map;
 
     /**
