@@ -10,9 +10,9 @@ import java.util.Map;
  */
 public class MyMap {
 
-    private ArrayList<Point> allPointsInMap; // 这里存储所有点，但似乎没用
-    private HashMap<Point, Integer> pointIndex; // Point名称到索引的映射
-    private int[][] distanceMatrix; // 存储点与点之间的距离s
+    private ArrayList<Point> allPointsInMap = new ArrayList<>(); // 这里存储所有点，但似乎没用
+    private HashMap<Point, Integer> pointIndex = new HashMap<>();  // Point名称到索引的映射
+    private int[][] distanceMatrix = new int[0][0]; // 存储点与点之间的距离s
 
     public ArrayList<Point> getMapPointsArray() {
         return allPointsInMap;

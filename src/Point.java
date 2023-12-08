@@ -4,7 +4,7 @@ public class Point {
 
     private String name;
     private final int[] position;
-    private LinkedList<Point> children = null;
+    private LinkedList<Point> children = new LinkedList<>();
     public boolean done; //似乎用不上,因为在dfs中，不会有回路
 
     public Point(int x, int y, String name) {

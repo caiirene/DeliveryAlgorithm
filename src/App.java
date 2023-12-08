@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 public class App {
     private Point origin;
-    private ArrayList<Point> routePlan; //从MST生成出真正的路线
-    private ArrayList<Point> destinations; //应该用不到
+    private LinkedList<Point> routePlan; //从MST生成出真正的路线
+    private ArrayList<Point> destinations = new ArrayList<>(); //应该用不到
     private MyMap map;
     private MST mst;
 
@@ -13,7 +14,7 @@ public class App {
      * @param
      */
     public App() {
-        this.routePlan = new ArrayList<>();
+        this.routePlan = new LinkedList<>();
         this.map = new MyMap(); // 初始化一个空的距离矩阵
         Point origin = new Point(0,0,"origin");
         this.origin = origin;
@@ -27,7 +28,12 @@ public class App {
      * @param newPoint
      */
     public void addOneDestiny(Point newPoint) {
+        this.destinations.add(newPoint);
         this.map.addPoint(newPoint);
+    }
+
+    public ArrayList<Point> getDestinations() {
+        return destinations;
     }
 
     /**
@@ -42,7 +48,7 @@ public class App {
      * 给出路线
      * @return route
      */
-    public ArrayList<Point> getRoutePlan(){
+    public LinkedList<Point> getRoutePlan(){
         return this.routePlan;
     }
 
@@ -66,7 +72,7 @@ public class App {
             int minDis = Integer.MAX_VALUE;
             //开始扫描表格，寻找最小边
             for (Point p : inMST) {
-                for (int i=1; i<=mapSize; i++){
+                for (int i=1; i<mapSize; i++){
                     if (!inMST.contains(map.findPoint(i)) &&
                             map.getDistanceMatrix()[map.findIndex(p)][i]<minDis) {
                         minDis = map.getDistanceMatrix()[map.findIndex(p)][i];
@@ -82,6 +88,12 @@ public class App {
             mst.addNode(minDis);//虽然无用
         }
         //while循环结束，没有其他操作
+    }
+
+    public void generateRoute() {
+        mst.dfs(mst.getRoot());
+        mst.finishRouteBackToRoot();
+        this.routePlan = mst.getAPPRoute();
     }
 
 }

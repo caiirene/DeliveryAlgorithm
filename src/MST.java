@@ -17,6 +17,7 @@ public class MST {
         nodeNumber = 1;
         APPRoute = new LinkedList<>();
         APPRoute.add(root);
+        from = root;
     }
 
     public LinkedList<Point> getAPPRoute() {
