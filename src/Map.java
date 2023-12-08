@@ -1,11 +1,25 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Map类用来表示我们自制的地图，
+ * 地图内容很简单，每个点都可以连接到所有点，它们之间的边就是距离
+ * 方法：1.添加新点 2.获取已经保存过的两点间的距离
+ */
 public class Map {
 
     private ArrayList<Point> allPoints; // 这里存储所有点，但似乎没用
     private HashMap<Point, Integer> pointIndex; // Point名称到索引的映射
-    private int[][] distanceMatrix; // 存储点与点之间的距离s
+    //private int[][] distanceMatrix; // 存储点与点之间的距离s
+    private DistanceTableCell[][] distanceMatrix; // 存储点与点之间的距离s
+    private class DistanceTableCell {
+        public boolean cellUsed;
+        public int cellInt;
+        public DistanceTableCell(int distance){
+            cellInt = distance;
+            cellUsed = false;
+        }
+    }
 
     /**
      * 仅仅用于计算两点间距离，计算方法：
@@ -26,10 +40,10 @@ public class Map {
      */
     public void addPoint(Point newPoint) {
         allPoints.add(newPoint); // 将新点加入到点列表中
-        pointIndex.put(newPoint.getName(), allPoints.size() - 1); // 更新点索引映射
+        pointIndex.put(newPoint, allPoints.size() - 1); // 更新点索引映射
 
         int newSize = distanceMatrix.length + 1;
-        int[][] newMatrix = new int[newSize][newSize];
+        DistanceTableCell[][] newMatrix = new DistanceTableCell[newSize][newSize];
 
         // 复制旧的距离矩阵
         for (int i = 0; i < distanceMatrix.length; i++) {
@@ -38,7 +52,8 @@ public class Map {
 
         // 计算新点到其他所有点的距离
         for (int i = 0; i < newSize - 1; i++) {
-            newMatrix[i][newSize - 1] = newMatrix[newSize - 1][i] = calculateDistance(newPoint, allPoints.get(i));
+            newMatrix[i][newSize - 1] = newMatrix[newSize - 1][i] =
+                    new DistanceTableCell(calculateDistance(newPoint, allPoints.get(i)));
         }
 
         distanceMatrix = newMatrix;
@@ -49,14 +64,20 @@ public class Map {
      * @param point
      * @return index
      */
-    public int findIndexByName(Point point) {
+    public int findIndex(Point point) {
         return pointIndex.get(point);
     }
 
+    /**
+     * 获取两个已存的点的距离，虽然我不知道这样做的意义是什么，但，先这样写上吧
+     * @param pointA
+     * @param pointB
+     * @return 距离
+     */
     public int getDistance(Point pointA, Point pointB){
         int indexA = pointIndex.get(pointA);
         int indexB = pointIndex.get(pointB);
-        return distanceMatrix[indexA][indexB];
+        return distanceMatrix[indexA][indexB].cellInt;
     }
 
 }
