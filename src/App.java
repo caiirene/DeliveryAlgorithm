@@ -2,6 +2,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 
+/**
+ * 这个APP类其实就是我们创建的任务管理器
+ * 算是一个controller
+ * 我们的main函数都是通过这个任务管理器进行运作
+ */
 public class App {
     private Point origin;
     private LinkedList<Point> routePlan; //从MST生成出真正的路线
@@ -90,6 +95,9 @@ public class App {
         //while循环结束，没有其他操作
     }
 
+    /**
+     * 让MST自己生成路线，然后把它的路线copy到这里
+     */
     public void generateRoute() {
         mst.dfs(this.origin);
         mst.finishRouteBackToRoot();

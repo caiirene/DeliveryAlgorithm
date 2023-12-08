@@ -1,5 +1,9 @@
 import java.util.LinkedList;
 
+/**
+ * 这个Point类首先记录了一个目的地的基本信息，如xy坐标，以及名字
+ * 然后更重要的是，它会在生成MST时记录tree的结构，也就是每个点有自己的children
+ */
 public class Point {
 
     private String name;
