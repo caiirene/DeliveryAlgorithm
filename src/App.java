@@ -91,7 +91,7 @@ public class App {
     }
 
     public void generateRoute() {
-        mst.dfs(mst.getRoot());
+        mst.dfs(this.origin);
         mst.finishRouteBackToRoot();
         this.routePlan = mst.getAPPRoute();
     }

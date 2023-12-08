@@ -39,14 +39,17 @@ public class MST {
     }
 
     public void dfs(Point begin) {
+        System.out.print("MST-dfs called" + "\n");
         this.from = begin;
-        if (begin.getChildren()==null) {
+        if (begin.getChildren().isEmpty()) {
+            System.out.print("MST-dfs-reached leaf node " + begin.getName() + "\n");
             return;
         }
         else {
             for (Point c : begin.getChildren()) {
                 this.to = c;
                 this.APPRouteWeight+=calculateDistance(from,to);
+                this.APPRoute.add(c);
                 dfs(to);
             }
         }

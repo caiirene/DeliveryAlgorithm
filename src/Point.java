@@ -21,6 +21,7 @@ public class Point {
     }
 
     public void connectWith(Point childNode){
+        System.out.print("Point-getConnection: "+ name + childNode.getName() + "\n");
         this.children.add(childNode);
     }
 
