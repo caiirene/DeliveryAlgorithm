@@ -1,11 +1,11 @@
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 
 public class App {
     private Point origin;
     private ArrayList<Point> routePlan; //从MST生成出真正的路线
     private ArrayList<Point> destinations; //应该用不到
-    private Map map;
+    private MyMap map;
     private MST mst;
 
     /**
@@ -14,7 +14,7 @@ public class App {
      */
     public App() {
         this.routePlan = new ArrayList<>();
-        this.map = new Map(); // 初始化一个空的距离矩阵
+        this.map = new MyMap(); // 初始化一个空的距离矩阵
         Point origin = new Point(0,0,"origin");
         this.origin = origin;
         this.map.addPoint(this.origin);
@@ -49,36 +49,39 @@ public class App {
     /**
      * 生成MST
      * 前提：在我们已经完成所有点的添加后，再调用，且仅调用一次
-     *
-     * @return
+     * 过程介绍：1.调取map的DM表格 2.将原点加入MST 3.while MST的大小还不够
+     *         4.两个for循环，循环2D表格（其中row只扫描加入到MST的行，column扫描时判断i是否为已经加入inMST）
+     *         5.找出最小边，记录：nearest为下一个加入MST的点，当前扫描row为其父。
+     *         6.跳出两个for循环，将两个Point连接
+     * @return 因为我们这一步操作其实是在将Point相连，并没有记录MST的总长度，所以没有返回值
      */
-    public ArrayList<Point> generateMST() {
+    public void generateMST() {
+        HashSet<Point> inMST = new HashSet<Point>();
+        inMST.add(origin);
+        int mapSize = map.getMapSize();
 
-        return new ArrayList<Point>();
-    }
-
-
-    private int findMinInRow(int[][] array) {
-        if (array == null || array.length == 0 || array[0].length == 0) {
-            // 数组为空或第一行为空，返回一个错误标识或抛出异常
-            return Integer.MAX_VALUE; // 或者抛出一个异常
-        }
-
-        int minValue = array[0][0]; // 假设第一个元素是最小的
-        int minIndex = 0; // 最小值的索引
-
-        // 遍历第一行的每个元素
-        for (int i = 1; i < array[0].length; i++) {
-            if (array[0][i] < minValue) {
-                minValue = array[0][i]; // 更新最小值
-                minIndex = i; // 更新最小值的索引
+        while (inMST.size()<mapSize) {
+            Point parent = null;
+            Point nearest = null;
+            int minDis = Integer.MAX_VALUE;
+            //开始扫描表格，寻找最小边
+            for (Point p : inMST) {
+                for (int i=1; i<=mapSize; i++){
+                    if (!inMST.contains(map.findPoint(i)) &&
+                            map.getDistanceMatrix()[map.findIndex(p)][i]<minDis) {
+                        minDis = map.getDistanceMatrix()[map.findIndex(p)][i];
+                        parent = p;
+                        nearest = map.findPoint(i);
+                    }
+                }
             }
+            //找到最小边后，将它加进MST（其实就是把两个node连接起来,是直接调用Point的方法）
+            assert parent != null;
+            parent.connectWith(nearest);
+            inMST.add(nearest);
+            mst.addNode(minDis);//虽然无用
         }
-
-        // 这里返回最小值，如果需要索引也可以返回
-        return minValue;
+        //while循环结束，没有其他操作
     }
-
-
 
 }

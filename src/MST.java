@@ -4,6 +4,7 @@ public class MST {
 
     private ArrayList<Point> allDestination;
     private int nodeNumber;
+    private int treeWeight = 0;
 
     private Point root;
 
@@ -16,8 +17,9 @@ public class MST {
         return root;
     }
 
-    public void addNode() {
+    public void addNode(int newEdgeWeight) {
         nodeNumber++;
+        treeWeight += newEdgeWeight;
     }
 
 }
