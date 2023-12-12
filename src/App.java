@@ -89,10 +89,12 @@ public class App {
             //找到最小边后，将它加进MST（其实就是把两个node连接起来,是直接调用Point的方法）
             assert parent != null;
             parent.connectWith(nearest);
+            parent.sortChildren();
             inMST.add(nearest);
             mst.addNode(minDis);//虽然无用
         }
         //while循环结束，没有其他操作
+        this.origin.sortChildren();
     }
 
     /**

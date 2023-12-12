@@ -1,3 +1,5 @@
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 
 /**
@@ -33,6 +35,21 @@ public class Point {
         this.done = done;
     }
 
+    public void sortChildren() {
+        Collections.sort(children, new Comparator<Point>() {
+            @Override
+            public int compare(Point p1, Point p2) {
+                int distanceToP1 = calculateDistance(Point.this, p1);
+                int distanceToP2 = calculateDistance(Point.this, p2);
+                return Integer.compare(distanceToP1, distanceToP2);
+            }
+        });
+    }
+
+    private int calculateDistance(Point point1, Point point2) {
+        return Math.abs(point1.getPosition()[0] - point2.getPosition()[0])
+                + Math.abs(point1.getPosition()[1] - point2.getPosition()[1]);
+    }
     public LinkedList<Point> getChildren() {
         return this.children;
     }
